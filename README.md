@@ -13,14 +13,13 @@
 1. Recopilar secuencias de alta calidad de los genes COI, RAG1 y 12S rRNA para distintas especies de gekkos desde la base de datos NCBI.
 2. Implementar Conda para gestionar entornos de software y garantizar la instalación y ejecución adecuada de todas las herramientas bioinformáticas necesarias, evitando conflictos entre dependencias.
 3. Realizar un control de calidad inicial de las secuencias en formato FASTQ utilizando FastQC, para identificar y eliminar lecturas de baja calidad o contaminadas antes del análisis.
-4. Alinear múltiples secuencias de ADN para cada gen (COI, RAG1 y 12S rRNA) usando Muscle, logrando alineaciones precisas que permitan una inferencia filogenética confiable.
+4. Alinear múltiples secuencias de ADN para cada gen (CD59, COX1 y MPC1) usando Muscle, logrando alineaciones precisas que permitan una inferencia filogenética confiable.
 5. Seleccionar el mejor modelo evolutivo y construir árboles filogenéticos mediante IQ-TREE, aplicando métodos de máxima verosimilitud y evaluando el soporte estadístico (bootstrap) de las relaciones filogenéticas.
 6. Visualizar y editar los árboles filogenéticos obtenidos con FigTree, facilitando la interpretación y presentación clara de las relaciones evolutivas entre las especies de gekkos.
 7. Optimizar la calidad de las secuencias y alineaciones a través del flujo de trabajo integrado de estas herramientas, para obtener un árbol filogenético lo más preciso y confiable posible.
 8. Interpretar los resultados filogenéticos en el contexto biológico y evolutivo de las especies de gekkos, identificando posibles eventos evolutivos relevantes.
    
-## Programas a utilizar
-* Conda: Instala y activa un entorno con las herramientas necesarias (FastQC, Muscle, IQ-TREE, FigTree). Esto evita conflictos y facilita reproducibilidad.
+## Programas a utilizar.
 
 * Muscle: Alineamiento múltiple. Con las secuencias limpias, realiza alineamientos para cada gen (COI, RAG1, 12S rRNA) por separado. Revisa y edita manualmente las alineaciones si es necesario.
 
@@ -29,43 +28,43 @@
 * FigTree: Visualización y edición del árbol filogenético. Importa el árbol generado en FigTree para visualizarlo, editarlo y preparar figuras para informes o publicaciones.
 
 ## Comandos
-* **Conda**
-- Instalación y activación de un entorno
-```
-module av anaconda
-module load anaconda3/2023.03
-conda create -n phylo_gekkonidae python=3.10
-conda activate phylo_gekkonidae
-conda install -c bioconda muscle iqtree
-conda install -c conda-forge figtree
-```
+
 * **Obtención de genes**
 ```
-./datasets download gene symbol COI --ortholog Gekkonidae --filename coi_gekkos.zip
-./datasets download gene symbol RAG1 --ortholog Gekkonidae --filename rag1_gekkos.zip
-./datasets download gene symbol 12s --ortholog Gekkonidae --filename 12s_gekkos.zip
+./datasets download gene symbol CD59 --ortholog Gekkonidae --filename cd59_Gekkonidae.zip
+./datasets download gene symbol COX1 --ortholog Gekkonidae --filename cox1_Gekkonidae.zip
+./datasets download gene symbol MPC1 --ortholog Gekkonidae --filename mpc1_Gekkonidae.zip
 ```
-* Se debe descomprimir los archivos obtenidos
+* **Descomprimir los Archivos**
 ```
-unzip coi_gekkos.zip
-unzip rag1_gekkos.zip
-unzip 12s_gekkos.zip
+unzip cd59_Gekkonidae.zip
+unzip cox1_Gekkonidae.zip
+unzip mpc1_Gekkonidae.zip
+```
+* **Juntar los genes**
+```
+cat *.fna > Gekkonidae_orthologs.fasta
 ```
 * **MUSCLE**
 - Alineación de genes
 ```
-muscle -in COI_sequences.fasta -out COI_aligned.fasta
-muscle -in RAG1_sequences.fasta -out RAG1_aligned.fasta
-muscle -in 12S_sequences.fasta -out 12S_aligned.fasta
+./muscle3.8.31_i86linux64 -in Gekkonidae_orthologs.fasta -out Gekkonidaealigned.fasta
+```
+* **Cambiar en ATOM**
+```
+^>([^\[]+)\s\[organism=([^\]]+)\][^\n]*
+>$2 $1
 ```
 * **IQ-TREE**
 ```
-iqtree -s COI_aligned.fasta -m MFP -bb 1000 -nt AUTO
-iqtree -s RAG1_aligned.fasta -m MFP -bb 1000 -nt AUTO
-iqtree -s 12S_aligned.fasta -m MFP -bb 1000 -nt AUTO
+module av iqtree
+module load iqtree/2.2.2.6
+iqtree2 -s Gekkonidaealignedatomico.fasta
 ```
 * **FigTree**
 * Una vez obtenidos los arboles de los Gekkos, se debe poner el archivo en la aplicación Figtree para observar los arboles filogenéticos obtenidos de IQTREE donde se puede modificar de cualquier manera.
+## Resultados del Arbol Filogenético
+![ArbolRNA]()
 ## Referencias
 * Autumn, K., Liang, Y. A., Hsieh, S. T., Zesch, W., Chan, W. P., Kenny, T. W., ... & Full, R. J. (2002). Adhesive force of a single gecko foot-hair. Nature, 405(6787), 681–685. https://doi.org/10.1038/35015073
 
