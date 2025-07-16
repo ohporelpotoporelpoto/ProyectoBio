@@ -64,7 +64,7 @@ iqtree2 -s Gekkonidaealignedatomico.fasta
 * **FigTree**
 * Una vez obtenidos los arboles de los Gekkos, se debe poner el archivo en la aplicación Figtree para observar los arboles filogenéticos obtenidos de IQTREE donde se puede modificar de cualquier manera.
 ## Resultados del Arbol Filogenético
-![ArbolRNA]()
+![ArbolRNA](https://github.com/ohporelpotoporelpoto/ProyectoBio/blob/main/Gekkonidaealignedatomico.png)
 ## Referencias
 * Autumn, K., Liang, Y. A., Hsieh, S. T., Zesch, W., Chan, W. P., Kenny, T. W., ... & Full, R. J. (2002). Adhesive force of a single gecko foot-hair. Nature, 405(6787), 681–685. https://doi.org/10.1038/35015073
 
